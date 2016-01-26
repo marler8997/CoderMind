@@ -1,0 +1,58 @@
+
+
+
+Variable Scope
+-----------------------------
+
+Global (Can be accessed by anyone at the linker stage)
+Static Global (Global only to the file it is declared in)
+Public Field (Declared within a struct/class, can only be accessed if access to the struct/class is obtained)
+Private Field (Declared within a struct/class, can only be accessed by that struct/class's methods)
+Function Parameter or Local Function Variable (Only accessed inside the function)
+Block Scoped Parameter (Only accessed inside the block it is declared in)
+
+
+Namespaces and static class variables can be used to hide variables, but
+this "hiding" is sort of independent of "scope". You can hide a variable
+behind a namespace/class name, but it can still be accessed.
+
+
+
+
+Memory
+-------------------------------
+Questions to ask:
+Will this lifetime of this memory be limited to the lifetime of the function it is allocated in?
+{
+  YES:
+    Will it only be used for a small part of the function?
+    {
+      YES: Maybe it should be allocated on the stack in another function?
+      NO : Is the size known at runtime?
+      {
+        YES: Is it small enough to go on the stack?
+        {
+          YES: Probably should allocate it on the stack
+          NO : Probably should go on the heap, and make sure to de-allocate it on every return branch.
+        }
+        NO: Is the min/max size close?
+        {
+          YES: Is it small enough to go on the stack?
+          {
+            YES: Probably should allocate the MAX size on the stack.
+            NO:  Probably allocate it at runtime on the heap, and make sure to de-allocate it on every return branch.
+          }
+        }
+      }
+    }
+  NO : ...
+}
+
+
+1. What is the lifetime of this memory?
+    - Tied to another structure?
+    - Tied to a function?
+    - Tied to a block within a function?
+2. Can the size be determined at runtime?
+3. Will it need to be resized?
+

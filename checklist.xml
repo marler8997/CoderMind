@@ -1,0 +1,8 @@
+<checklist>
+
+  <!-- Contains checklist items that programmers should think about -->
+  <item name="Declare inside it's own block">
+    <applies>local variable declaration</applies>
+  </item>
+
+</checklist>
